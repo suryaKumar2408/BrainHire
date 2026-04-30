@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+
+# environment variables
+.env
+.env.local
+.env.*.local
+
+# logs
+logs/
+*.log
+npm-debug.log*
+
+# runtime files
+pids/
+*.pid
+*.seed
+
+# coverage
+coverage/
+
+# build (if using TypeScript)
+dist/
+build/
+
+# misc
+.DS_Store
+.vscode/
+.idea/
+
+# uploads (if you store files locally)
+uploads/
