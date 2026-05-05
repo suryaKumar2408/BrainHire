@@ -50,7 +50,7 @@ export async function getMe() {
     const response=await api.get("/api/auth/get-me")
     return response.data
   } catch (error) {
-    console.log(error)
+    // Don't log — 401 is expected when not logged in
     throw error
   }
 }
