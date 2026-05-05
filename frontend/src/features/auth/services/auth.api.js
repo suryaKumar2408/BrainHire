@@ -6,11 +6,11 @@ baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
 withCredentials:true
 })
 
-export async function register({userame,email,password}) {
+export async function register({username,email,password}) {
 
     try {
       const response=await  api.post('/api/auth/register',{
-        userame,email,password
+        username,email,password
     })
     return response.data
         
