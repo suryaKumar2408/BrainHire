@@ -1,3 +1,13 @@
+// ── Spinner Keyframes ─────────────────────────────────────────────────────────
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
 .button{
     border: none;
     outline: none;
@@ -5,15 +15,52 @@
     padding-block: 0.75rem;
     border-radius: 1rem;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
 
     transition: all 0.3s ease-in-out;
 
     &.primary-button{
         background-color: #e1034d;
         color: white;
+
+        &--loading {
+            cursor: wait;
+            pointer-events: none;
+            background: linear-gradient(
+                110deg,
+                #e1034d 0%,
+                #ff2d78 30%,
+                #e1034d 60%,
+                #ff2d78 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 2s ease-in-out infinite;
+            opacity: 0.9;
+        }
     }
 
     &:active{
         transform: scale(0.9);
     }
+
+    &:disabled {
+        cursor: wait;
+    }
+}
+
+// ── Button Spinner ────────────────────────────────────────────────────────────
+.btn-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
 }
