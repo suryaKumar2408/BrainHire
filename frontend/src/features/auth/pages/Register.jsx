@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { useNavigate,Link } from 'react-router'
+import { useNavigate,Link, Navigate } from 'react-router'
 import { useAuth } from '../hooks/useAuth'
 
 const Register = () => {
@@ -14,11 +14,16 @@ const Register = () => {
     e.preventDefault()
     try {
       await handleRegister({username,email,password})
-      navigate("/")
+      navigate("/dashboard")
     } catch (error) {
       // Registration failed — stay on the page
     }
   }
+  // Already logged in → skip register page
+  if (!initializing && user) {
+    return <Navigate to="/dashboard" replace />
+  }
+
   if(initializing){
     return(<main><h1>Loading.......</h1></main>)
   }

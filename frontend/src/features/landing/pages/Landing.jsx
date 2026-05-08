@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
+import { useAuth } from '../../auth/hooks/useAuth'
 import '../style/landing.scss'
 
 // Animated counter hook
@@ -46,11 +47,17 @@ const StatCard = ({ value, suffix, label, start }) => {
 }
 
 const Landing = () => {
+    const { user, initializing } = useAuth()
     const [menuOpen, setMenuOpen] = useState(false)
     const [scrolled, setScrolled] = useState(false)
     const [statsRef, statsInView] = useInView(0.3)
     const [featuresRef, featuresInView] = useInView(0.1)
     const [howRef, howInView] = useInView(0.1)
+
+    // Redirect logged-in users straight to dashboard
+    if (!initializing && user) {
+        return <Navigate to="/dashboard" replace />
+    }
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20)
