@@ -8,7 +8,7 @@ const Register = () => {
   const [username, setusername] = useState("")
   const [email, setemail] = useState("")
   const [password, setpassword] = useState("")
-  const{loading, initializing, handleRegister}=useAuth()
+  const{user, loading, initializing, handleRegister}=useAuth()
 
   const handleSubmit=async(e)=>{
     e.preventDefault()
