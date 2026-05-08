@@ -140,6 +140,7 @@ const Home = () => {
 
             {/* Page Footer */}
             <footer className='page-footer'>
+                <a href='/'>← Back to Home</a>
                 <a href='#'>Privacy Policy</a>
                 <a href='#'>Terms of Service</a>
                 <a href='#'>Help Center</a>
