@@ -5,8 +5,9 @@ export const AuthContext=createContext()
 
 export const AuthProvider=({children})=>{
     
-    const [user ,setUser]=useState(null)
-    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(false)    // for login/register actions
+    const [initializing, setInitializing] = useState(true) // for startup getMe check
 
     useEffect(() => {
         const getAndSetUser = async () => {
@@ -17,14 +18,14 @@ export const AuthProvider=({children})=>{
                 // Expected 401 when not logged in — no need to log
                 setUser(null)
             } finally {
-                setLoading(false)
+                setInitializing(false)
             }
         }
 
         getAndSetUser()
     }, [])
 
-    return(<AuthContext.Provider value={{user,setUser,loading,setLoading}}>
+    return(<AuthContext.Provider value={{user, setUser, loading, setLoading, initializing}}>
         {children}
     </AuthContext.Provider>
 

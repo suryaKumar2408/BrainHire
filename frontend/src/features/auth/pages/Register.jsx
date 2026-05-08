@@ -8,7 +8,7 @@ const Register = () => {
   const [username, setusername] = useState("")
   const [email, setemail] = useState("")
   const [password, setpassword] = useState("")
-  const{loading,handleRegister}=useAuth()
+  const{loading, initializing, handleRegister}=useAuth()
 
   const handleSubmit=async(e)=>{
     e.preventDefault()
@@ -19,7 +19,7 @@ const Register = () => {
       // Registration failed — stay on the page
     }
   }
-  if(loading){
+  if(initializing){
     return(<main><h1>Loading.......</h1></main>)
   }
   

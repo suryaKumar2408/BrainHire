@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/useAuth'
 
 const Login = () => {
 
-  const {loading,handleLogin}=useAuth()
+  const {loading, initializing, handleLogin}=useAuth()
   const navigate=useNavigate()
   const [email, setemail] = useState("")
   const [password, setpassword] = useState("")
@@ -16,7 +16,7 @@ const Login = () => {
     navigate('/')
   }
 
-  if(loading){
+  if(initializing){
     return(<main><h1>Loading.......</h1></main>)
   }
 
