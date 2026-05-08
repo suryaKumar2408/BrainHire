@@ -54,16 +54,16 @@ const Landing = () => {
     const [featuresRef, featuresInView] = useInView(0.1)
     const [howRef, howInView] = useInView(0.1)
 
-    // Redirect logged-in users straight to dashboard
-    if (!initializing && user) {
-        return <Navigate to="/dashboard" replace />
-    }
-
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20)
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
+
+    // Redirect logged-in users straight to dashboard (after all hooks)
+    if (!initializing && user) {
+        return <Navigate to="/dashboard" replace />
+    }
 
     const features = [
         {
