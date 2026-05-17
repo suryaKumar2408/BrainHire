@@ -1,21 +1,48 @@
-// ── Shared Variables (mirrors home.scss theme) ────────────────────────────────
-$bg-page: #0d1117;
-$bg-card: #161b22;
-$bg-panel: #1c2230;
-$bg-input: #1e2535;
-$border-color: #2a3348;
-$text-primary: #e6edf3;
-$text-muted: #7d8590;
-$accent: #ff2d78;
-$font-stack: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+// ── Teal Light Theme (matches landing page) ────────────────────────────────────
+$teal:        #4ecdc4;
+$teal-dark:   #37b3aa;
+$teal-light:  #e8f8f7;
+$teal-mid:    #c5ecea;
+
+$bg-page:      #f0f0f0;
+$bg-card:      #ffffff;
+$bg-panel:     #f7f7f7;
+$bg-input:     #f5f5f5;
+$border-color: #e8e8e8;
+$border-soft:  #f0f0f0;
+
+$text-primary: #1a1a1a;
+$text-muted:   #999999;
+$text-sub:     #6b6b6b;
+
+$accent: $teal;
+
+$font-stack: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
 // severity palette
-$severity-high: #ff4d4d;
-$severity-medium: #f5a623;
-$severity-low: #3fb950;
+$severity-high:   #dc2626;
+$severity-medium: #d97706;
+$severity-low:    #16a34a;
 
 *::-webkit-scrollbar {
     display: none;
+}
+
+// ── Loading Screen ────────────────────────────────────────────────────────────
+.loading-screen {
+    width: 100%;
+    min-height: 100vh;
+    background: $bg-page;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-stack;
+
+    h1 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: $text-sub;
+    }
 }
 
 // ── Page Shell ────────────────────────────────────────────────────────────────
@@ -39,8 +66,9 @@ $severity-low: #3fb950;
     margin: 0 auto;
     background-color: $bg-card;
     border: 1px solid $border-color;
-    border-radius: 1rem;
+    border-radius: 20px;
     justify-content: space-between;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
 }
 
 .interview-divider {
@@ -58,9 +86,6 @@ $severity-low: #3fb950;
     flex-direction: column;
     justify-content: space-between;
     gap: 0.25rem;
-
-
-
 
     &__label {
         font-size: 0.7rem;
@@ -80,7 +105,7 @@ $severity-low: #3fb950;
         padding: 0.65rem 0.75rem;
         background: none;
         border: none;
-        border-radius: 0.5rem;
+        border-radius: 10px;
         color: $text-muted;
         font-family: $font-stack;
         font-size: 0.875rem;
@@ -94,11 +119,11 @@ $severity-low: #3fb950;
         }
 
         &--active {
-            background-color: rgba($accent, 0.1);
-            color: $accent;
+            background-color: $teal-light;
+            color: $teal-dark;
 
             .interview-nav__icon svg {
-                stroke: $accent;
+                stroke: $teal-dark;
             }
         }
     }
@@ -119,13 +144,6 @@ $severity-low: #3fb950;
     max-height: calc(100vh - 3rem);
     padding-bottom: 5rem;
     align-items: flex-start;
-
-
-
-
-
-
-
 
     section {
         min-height: 100%;
@@ -167,12 +185,13 @@ $severity-low: #3fb950;
 .q-card {
     background-color: $bg-panel;
     border: 1px solid $border-color;
-    border-radius: 0.6rem;
+    border-radius: 12px;
     overflow: hidden;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
 
     &:hover {
-        border-color: lighten($border-color, 8%);
+        border-color: rgba(78,205,196,0.35);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
     }
 
     &__header {
@@ -188,9 +207,9 @@ $severity-low: #3fb950;
         flex-shrink: 0;
         font-size: 0.7rem;
         font-weight: 700;
-        color: $accent;
-        background-color: rgba($accent, 0.1);
-        border: 1px solid rgba($accent, 0.2);
+        color: $teal-dark;
+        background-color: $teal-light;
+        border: 1px solid $teal-mid;
         border-radius: 0.3rem;
         padding: 0.15rem 0.4rem;
         margin-top: 2px;
@@ -213,7 +232,7 @@ $severity-low: #3fb950;
 
         &--open {
             transform: rotate(180deg);
-            color: $accent;
+            color: $teal-dark;
         }
     }
 
@@ -224,6 +243,7 @@ $severity-low: #3fb950;
         gap: 0.75rem;
         border-top: 1px solid $border-color;
         padding-top: 0.75rem;
+        background: $bg-card;
     }
 
     &__section {
@@ -234,7 +254,7 @@ $severity-low: #3fb950;
         p {
             margin: 0;
             font-size: 0.835rem;
-            color: lighten($text-muted, 15%);
+            color: $text-sub;
             line-height: 1.6;
         }
     }
@@ -249,15 +269,15 @@ $severity-low: #3fb950;
         width: fit-content;
 
         &--intention {
-            color: #a78bfa;
-            background-color: rgba(#a78bfa, 0.1);
-            border: 1px solid rgba(#a78bfa, 0.2);
+            color: #7c3aed;
+            background-color: rgba(#7c3aed, 0.08);
+            border: 1px solid rgba(#7c3aed, 0.18);
         }
 
         &--answer {
-            color: #3fb950;
-            background-color: rgba(#3fb950, 0.1);
-            border: 1px solid rgba(#3fb950, 0.2);
+            color: #16a34a;
+            background-color: rgba(#16a34a, 0.08);
+            border: 1px solid rgba(#16a34a, 0.18);
         }
     }
 }
@@ -277,7 +297,7 @@ $severity-low: #3fb950;
         top: 0;
         bottom: 0;
         width: 2px;
-        background: linear-gradient(to bottom, $accent, rgba($accent, 0.1));
+        background: linear-gradient(to bottom, $teal, rgba($teal, 0.1));
         border-radius: 1px;
     }
 }
@@ -299,7 +319,7 @@ $severity-low: #3fb950;
         height: 14px;
         border-radius: 50%;
         background-color: $bg-card;
-        border: 2px solid $accent;
+        border: 2px solid $teal;
     }
 
     &__header {
@@ -311,9 +331,9 @@ $severity-low: #3fb950;
     &__badge {
         font-size: 0.7rem;
         font-weight: 700;
-        color: $accent;
-        background-color: rgba($accent, 0.1);
-        border: 1px solid rgba($accent, 0.25);
+        color: $teal-dark;
+        background-color: $teal-light;
+        border: 1px solid $teal-mid;
         padding: 0.1rem 0.5rem;
         border-radius: 2rem;
     }
@@ -338,7 +358,7 @@ $severity-low: #3fb950;
             align-items: flex-start;
             gap: 0.5rem;
             font-size: 0.845rem;
-            color: lighten($text-muted, 12%);
+            color: $text-sub;
             line-height: 1.5;
         }
     }
@@ -348,7 +368,7 @@ $severity-low: #3fb950;
         width: 5px;
         height: 5px;
         border-radius: 50%;
-        background-color: $text-muted;
+        background-color: $teal;
         margin-top: 8px;
     }
 }
@@ -361,6 +381,8 @@ $severity-low: #3fb950;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    background: $bg-panel;
+    border-radius: 0 20px 20px 0;
 }
 
 .sidebar-divider {
@@ -394,6 +416,7 @@ $severity-low: #3fb950;
         align-items: center;
         justify-content: center;
         border: 4px solid;
+        background: $bg-card;
 
         &.score--high {
             border-color: $severity-low;
@@ -455,25 +478,25 @@ $severity-low: #3fb950;
     font-size: 0.775rem;
     font-weight: 500;
     padding: 0.3rem 0.7rem;
-    border-radius: 0.4rem;
+    border-radius: 100px;
     border: 1px solid;
     cursor: default;
 
     &--high {
         color: $severity-high;
-        background-color: rgba($severity-high, 0.1);
-        border-color: rgba($severity-high, 0.25);
+        background-color: rgba($severity-high, 0.08);
+        border-color: rgba($severity-high, 0.22);
     }
 
     &--medium {
         color: $severity-medium;
-        background-color: rgba($severity-medium, 0.1);
-        border-color: rgba($severity-medium, 0.25);
+        background-color: rgba($severity-medium, 0.08);
+        border-color: rgba($severity-medium, 0.22);
     }
 
     &--low {
         color: $severity-low;
-        background-color: rgba($severity-low, 0.1);
-        border-color: rgba($severity-low, 0.25);
+        background-color: rgba($severity-low, 0.08);
+        border-color: rgba($severity-low, 0.22);
     }
 }

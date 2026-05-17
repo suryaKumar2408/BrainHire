@@ -8,35 +8,42 @@
     100% { background-position: 200% 0; }
 }
 
-.button{
+.button {
     border: none;
     outline: none;
-    padding-inline:1.5rem ;
+    padding-inline: 1.5rem;
     padding-block: 0.75rem;
-    border-radius: 1rem;
+    border-radius: 100px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     font-size: 0.875rem;
-    font-weight: 500;
+    font-weight: 600;
+    font-family: 'Inter', system-ui, sans-serif;
+    transition: all 0.25s ease;
 
-    transition: all 0.3s ease-in-out;
-
-    &.primary-button{
-        background-color: #e1034d;
+    &.primary-button {
+        background-color: #4ecdc4;
         color: white;
+        box-shadow: 0 3px 14px rgba(78, 205, 196, 0.30);
+
+        &:hover {
+            background-color: #37b3aa;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.40);
+        }
 
         &--loading {
             cursor: wait;
             pointer-events: none;
             background: linear-gradient(
                 110deg,
-                #e1034d 0%,
-                #ff2d78 30%,
-                #e1034d 60%,
-                #ff2d78 100%
+                #4ecdc4 0%,
+                #7eddd8 30%,
+                #4ecdc4 60%,
+                #7eddd8 100%
             );
             background-size: 200% 100%;
             animation: shimmer 2s ease-in-out infinite;
@@ -44,8 +51,8 @@
         }
     }
 
-    &:active{
-        transform: scale(0.9);
+    &:active {
+        transform: scale(0.97);
     }
 
     &:disabled {
@@ -58,7 +65,7 @@
     display: inline-block;
     width: 16px;
     height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.35);
     border-top-color: #fff;
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
