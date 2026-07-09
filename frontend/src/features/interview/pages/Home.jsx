@@ -23,9 +23,21 @@ const Home = () => {
     }
 
     const handleGenerateReport = async () => {
-        const resumeFile = resumeInputRef.current.files[ 0 ]
+        const resumeFile = resumeInputRef.current?.files?.[0]
+        if (!jobDescription.trim()) {
+            alert("Please paste the target job description.")
+            return
+        }
+        if (!resumeFile && !selfDescription.trim()) {
+            alert("Please upload your resume or write a quick self-description.")
+            return
+        }
         const data = await generateReport({ jobDescription, selfDescription, resumeFile })
-        navigate(`/interview/${data._id}`)
+        if (data && data._id) {
+            navigate(`/interview/${data._id}`)
+        } else {
+            alert("Failed to generate your interview plan. Please try again.")
+        }
     }
 
     if (loading) {

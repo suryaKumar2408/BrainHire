@@ -126,7 +126,8 @@ Job Description: ${jobDescription}
 Remember: Each question in technicalQuestions and behavioralQuestions MUST include "question", "intention", AND "answer" fields. The "answer" must be a detailed guide on how to answer.`
 
     const response = await openai.chat.completions.create({
-        model: "google/gemini-2.0-flash-001",
+        model: "google/gemini-2.5-flash",
+        max_tokens: 2000,
         messages: [
             {
                 role: "system",
@@ -232,7 +233,8 @@ Job Description: ${jobDescription}
 Tailor the resume for the given job description. Highlight the candidate's strengths and relevant experience. The HTML should include inline/embedded CSS and be ready to convert to PDF. Keep it to 1-2 pages, ATS-friendly, and natural-sounding.`;
 
     const response = await openai.chat.completions.create({
-        model: "google/gemini-2.0-flash-001",
+        model: "google/gemini-2.5-flash",
+        max_tokens: 3000,
         messages: [
             {
                 role: "system",

@@ -2,29 +2,45 @@ const pdfParse=require("pdf-parse")
 const { generateInterviewReport, generateResumePdf }=require("../services/ai.service")
 const interviewReportModel=require("../models/interviewReport.model")
 
-async function generateInterViewReportController(req,res) {
+async function generateInterViewReportController(req, res) {
+    let resumeText = "";
+    if (req.file) {
+        try {
+            const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText();
+            resumeText = resumeContent.text || "";
+        } catch (err) {
+            console.error("PDF parse error:", err);
+            return res.status(400).json({ message: "Failed to parse uploaded PDF resume." });
+        }
+    }
 
-    const resumeContent= await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText()
-    const {selfDescription, jobDescription}=req.body
-    const interViewReportByAi=await generateInterviewReport({
-        resume:resumeContent.text,
+    const { selfDescription, jobDescription } = req.body;
+
+    if (!jobDescription) {
+        return res.status(400).json({ message: "Job description is required." });
+    }
+    if (!resumeText && !selfDescription) {
+        return res.status(400).json({ message: "Either a Resume or a Self Description is required." });
+    }
+
+    const interViewReportByAi = await generateInterviewReport({
+        resume: resumeText,
         selfDescription,
         jobDescription
-    })
+    });
 
-    const interviewReport=await interviewReportModel.create({
-        user:req.user.id,
-        resume:resumeContent.text,
+    const interviewReport = await interviewReportModel.create({
+        user: req.user.id,
+        resume: resumeText,
         selfDescription,
         jobDescription,
         ...interViewReportByAi
-
-    })
+    });
 
     res.status(201).json({
-        message:"interview report generated successfully",
+        message: "interview report generated successfully",
         interviewReport
-    })
+    });
 }
 
 async function generateResumePdfController(req, res) {
