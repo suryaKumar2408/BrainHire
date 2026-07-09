@@ -127,7 +127,7 @@ Remember: Each question in technicalQuestions and behavioralQuestions MUST inclu
 
     const response = await openai.chat.completions.create({
         model: "google/gemini-2.5-flash",
-        max_tokens: 2000,
+        max_tokens: 4000,
         messages: [
             {
                 role: "system",
