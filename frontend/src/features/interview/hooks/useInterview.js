@@ -24,7 +24,7 @@ export const useInterview = () => {
                 setReport(response.interviewReport)
             }
         } catch (error) {
-            console.log(error)
+            console.error("Generate report hook error:", error.response?.data || error.message || error)
         } finally {
             setLoading(false)
         }

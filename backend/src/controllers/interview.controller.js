@@ -23,24 +23,32 @@ async function generateInterViewReportController(req, res) {
         return res.status(400).json({ message: "Either a Resume or a Self Description is required." });
     }
 
-    const interViewReportByAi = await generateInterviewReport({
-        resume: resumeText,
-        selfDescription,
-        jobDescription
-    });
+    try {
+        const interViewReportByAi = await generateInterviewReport({
+            resume: resumeText,
+            selfDescription,
+            jobDescription
+        });
 
-    const interviewReport = await interviewReportModel.create({
-        user: req.user.id,
-        resume: resumeText,
-        selfDescription,
-        jobDescription,
-        ...interViewReportByAi
-    });
+        const interviewReport = await interviewReportModel.create({
+            user: req.user.id,
+            resume: resumeText,
+            selfDescription,
+            jobDescription,
+            ...interViewReportByAi
+        });
 
-    res.status(201).json({
-        message: "interview report generated successfully",
-        interviewReport
-    });
+        res.status(201).json({
+            message: "interview report generated successfully",
+            interviewReport
+        });
+    } catch (err) {
+        console.error("Report generation error:", err);
+        res.status(500).json({
+            message: "Failed to generate interview plan due to an AI service error.",
+            error: err.message || String(err)
+        });
+    }
 }
 
 async function generateResumePdfController(req, res) {
