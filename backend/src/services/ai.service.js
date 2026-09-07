@@ -127,7 +127,7 @@ Remember: Each question in technicalQuestions and behavioralQuestions MUST inclu
 
     const response = await openai.chat.completions.create({
         model: "openrouter/free",
-        max_tokens: 4000,
+        max_tokens: 8000,
         messages: [
             {
                 role: "system",
