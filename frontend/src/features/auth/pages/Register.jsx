@@ -30,29 +30,47 @@ const Register = () => {
   }
   
   return (
-    <main>
+    <main className="auth-page">
+      {/* Full display background robotic image */}
+      <div className="auth-bg">
+        <img src="/hero-hands.jpg" alt="" aria-hidden="true" />
+      </div>
+      <div className="auth-overlay" />
+      <div className="auth-grid" />
+      <div className="auth-glow" />
+
       <div className='form-container'>
+        <div className="auth-brand">
+          <span className="auth-brand-dot" />
+          <span>BrainHire</span>
+        </div>
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor='username'>Username</label>
             <input 
-            onChange={(e)=>setusername(e.target.value)}
-            type='text' id='username'name='username'placeholder='enter username'></input>
+              onChange={(e)=>setusername(e.target.value)}
+              type='text' id='username' name='username' placeholder='Enter username'
+              required
+            />
           </div>
           <div className="input-group">
             <label htmlFor='email'>Email</label>
             <input
-            onChange={(e)=>setemail(e.target.value)} 
-            type='email' id='email' name='email'placeholder='enter email address'></input>
+              onChange={(e)=>setemail(e.target.value)} 
+              type='email' id='email' name='email' placeholder='Enter email address'
+              required
+            />
           </div>
           <div className="input-group">
             <label htmlFor='password'>Password</label>
             <input
-            onChange={(e)=>setpassword(e.target.value)}
-             type='password' id='password'name='password'placeholder='enter password'></input>
+              onChange={(e)=>setpassword(e.target.value)}
+              type='password' id='password' name='password' placeholder='Enter password'
+              required
+            />
           </div>
-          <button className='button primary-button'>Register</button>
+          <button className='button primary-button' type="submit">Register</button>
         </form>
         <p>Already have an account? <Link to={"/login"}>Login</Link></p>
       </div>
