@@ -282,20 +282,8 @@ const Landing = () => {
                             Start For Free
                             <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                         </Link>
-                        <a href="#stats" className="btn-hero btn-hero--ghost">
-                            See Results
-                        </a>
                     </div>
 
-
-                </div>
-
-                {/* Scroll indicator */}
-                <div className={`hero__scroll-hint ${curtainDone ? 'hero__scroll-hint--visible' : ''}`}>
-                    <div className="hero__scroll-mouse">
-                        <div className="hero__scroll-wheel" />
-                    </div>
-                    <span>Scroll to explore</span>
                 </div>
             </section>
 

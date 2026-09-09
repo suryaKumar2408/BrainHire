@@ -490,10 +490,10 @@ $font: 'Inter', system-ui, sans-serif;
     display: flex;
     align-items: center;
     gap: 0.55rem;
-    padding: 0.65rem 1.5rem;
-    background: $cyan;
+    padding: 0.72rem 1.6rem;
+    background: linear-gradient(90deg, #00d4d4 0%, #00ffff 100%);
     color: #060a0e;
-    font-size: 0.855rem;
+    font-size: 0.86rem;
     font-weight: 700;
     border-radius: 100px;
     border: none;
@@ -501,13 +501,13 @@ $font: 'Inter', system-ui, sans-serif;
     font-family: $font;
     white-space: nowrap;
     letter-spacing: -0.1px;
-    transition: background 0.18s, transform 0.14s, box-shadow 0.18s;
-    box-shadow: 0 0 18px rgba(0,212,212,0.35), 0 3px 10px rgba(0,0,0,0.4);
+    transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
+    box-shadow: 0 0 22px rgba(0, 212, 212, 0.35), 0 4px 14px rgba(0, 0, 0, 0.4);
 
     &:hover {
-        background: #00ffff;
         transform: translateY(-1px);
-        box-shadow: 0 0 28px rgba(0,212,212,0.55), 0 6px 16px rgba(0,0,0,0.4);
+        filter: brightness(1.08);
+        box-shadow: 0 0 32px rgba(0, 212, 212, 0.6), 0 6px 18px rgba(0, 0, 0, 0.4);
     }
 
     &:active { transform: scale(0.98); }
