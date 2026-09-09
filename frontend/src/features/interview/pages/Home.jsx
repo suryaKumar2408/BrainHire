@@ -59,92 +59,6 @@ const IcArrow = () => (
   </svg>
 )
 
-/* ── Robot hand SVG (right-side hero visual) ────────────────────────────────── */
-const RobotHandVisual = () => (
-  <svg viewBox="0 0 520 260" xmlns="http://www.w3.org/2000/svg" className="hv-canvas">
-    <defs>
-      <radialGradient id="tipGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stopColor="#00d4d4" stopOpacity="0.9"/>
-        <stop offset="100%" stopColor="#00d4d4" stopOpacity="0"/>
-      </radialGradient>
-      <radialGradient id="handGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stopColor="#00d4d4" stopOpacity="0.12"/>
-        <stop offset="100%" stopColor="#00d4d4" stopOpacity="0"/>
-      </radialGradient>
-      <filter id="glow">
-        <feGaussianBlur stdDeviation="3" result="blur"/>
-        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-    </defs>
-
-    {/* Arm body segments */}
-    <rect x="10" y="118" width="80" height="22" rx="11" fill="none" stroke="#1a3040" strokeWidth="1.5"/>
-    <rect x="10" y="118" width="80" height="22" rx="11" fill="none" stroke="#00d4d4" strokeWidth="0.6" opacity="0.4"/>
-    {/* joint rings */}
-    <circle cx="90" cy="129" r="11" fill="#0d1820" stroke="#00d4d4" strokeWidth="0.7" opacity="0.5"/>
-    <rect x="98" y="120" width="68" height="20" rx="10" fill="none" stroke="#1a3040" strokeWidth="1.5"/>
-    <rect x="98" y="120" width="68" height="20" rx="10" fill="none" stroke="#00d4d4" strokeWidth="0.5" opacity="0.3"/>
-    <circle cx="165" cy="130" r="10" fill="#0d1820" stroke="#00d4d4" strokeWidth="0.7" opacity="0.5"/>
-    <rect x="172" y="122" width="55" height="18" rx="9" fill="none" stroke="#1a3040" strokeWidth="1.5"/>
-    <rect x="172" y="122" width="55" height="18" rx="9" fill="none" stroke="#00d4d4" strokeWidth="0.5" opacity="0.3"/>
-
-    {/* Palm */}
-    <rect x="222" y="108" width="64" height="46" rx="10" fill="#0d1a26" stroke="#1a3040" strokeWidth="2"/>
-    <rect x="222" y="108" width="64" height="46" rx="10" fill="none" stroke="#00d4d4" strokeWidth="0.8" opacity="0.5"/>
-    {/* palm detail lines */}
-    <line x1="235" y1="116" x2="275" y2="116" stroke="#00d4d4" strokeWidth="0.4" opacity="0.3"/>
-    <line x1="235" y1="122" x2="272" y2="122" stroke="#00d4d4" strokeWidth="0.4" opacity="0.2"/>
-
-    {/* Fingers */}
-    <rect x="228" y="76" width="13" height="34" rx="6.5" fill="#0d1a26" stroke="#00d4d4" strokeWidth="0.8" opacity="0.6"/>
-    <rect x="245" y="70" width="13" height="40" rx="6.5" fill="#0d1a26" stroke="#00d4d4" strokeWidth="0.8" opacity="0.6"/>
-    <rect x="262" y="73" width="13" height="37" rx="6.5" fill="#0d1a26" stroke="#00d4d4" strokeWidth="0.8" opacity="0.6"/>
-    <rect x="279" y="80" width="12" height="30" rx="6" fill="#0d1a26" stroke="#00d4d4" strokeWidth="0.7" opacity="0.5"/>
-    {/* Thumb */}
-    <rect x="210" y="120" width="15" height="10" rx="5" fill="#0d1a26" stroke="#00d4d4" strokeWidth="0.7" opacity="0.5" transform="rotate(-25 217 125)"/>
-
-    {/* Fingertip joints */}
-    <circle cx="234" cy="78" r="3.5" fill="#0d1a26" stroke="#00d4d4" strokeWidth="0.7" opacity="0.6"/>
-    <circle cx="251" cy="72" r="3.5" fill="#0d1a26" stroke="#00d4d4" strokeWidth="0.7" opacity="0.6"/>
-    <circle cx="268" cy="75" r="3.5" fill="#0d1a26" stroke="#00d4d4" strokeWidth="0.7" opacity="0.6"/>
-
-    {/* ENERGY glow on index fingertip */}
-    <circle cx="251" cy="66" r="26" fill="url(#tipGlow)" opacity="0.8"/>
-    <circle cx="251" cy="66" r="14" fill="url(#tipGlow)" opacity="0.7"/>
-    <circle cx="251" cy="66" r="6" fill="#00d4d4" opacity="0.9" filter="url(#glow)"/>
-    <circle cx="251" cy="66" r="3" fill="#ffffff" opacity="0.95"/>
-
-    {/* energy sparks */}
-    <line x1="251" y1="60" x2="248" y2="53" stroke="#00d4d4" strokeWidth="1" opacity="0.7" strokeLinecap="round"/>
-    <line x1="258" y1="63" x2="264" y2="58" stroke="#00d4d4" strokeWidth="1" opacity="0.6" strokeLinecap="round"/>
-    <line x1="244" y1="63" x2="238" y2="59" stroke="#00d4d4" strokeWidth="1" opacity="0.5" strokeLinecap="round"/>
-    <line x1="253" y1="58" x2="257" y2="50" stroke="#00ffff" strokeWidth="0.7" opacity="0.5" strokeLinecap="round"/>
-
-    {/* Human hand (right, reaching from right edge) */}
-    <g opacity="0.55">
-      {/* palm */}
-      <ellipse cx="420" cy="130" rx="35" ry="22" fill="rgba(200,180,160,0.12)" stroke="rgba(200,180,160,0.3)" strokeWidth="1"/>
-      {/* fingers */}
-      <path d="M 398 115 Q 392 95 388 80" fill="none" stroke="rgba(200,180,160,0.35)" strokeWidth="5" strokeLinecap="round"/>
-      <path d="M 410 110 Q 406 88 403 72" fill="none" stroke="rgba(200,180,160,0.35)" strokeWidth="5" strokeLinecap="round"/>
-      <path d="M 422 110 Q 420 88 419 72" fill="none" stroke="rgba(200,180,160,0.3)" strokeWidth="5" strokeLinecap="round"/>
-      <path d="M 434 112 Q 435 92 437 78" fill="none" stroke="rgba(200,180,160,0.28)" strokeWidth="5" strokeLinecap="round"/>
-      {/* thumb */}
-      <path d="M 385 128 Q 372 118 365 108" fill="none" stroke="rgba(200,180,160,0.3)" strokeWidth="5.5" strokeLinecap="round"/>
-      {/* arm extending right */}
-      <rect x="430" y="118" width="90" height="24" rx="12" fill="rgba(180,160,140,0.08)" stroke="rgba(200,180,160,0.2)" strokeWidth="1"/>
-    </g>
-
-    {/* Connection spark between the two hands */}
-    <circle cx="330" cy="80" r="2" fill="#00d4d4" opacity="0.6"/>
-    <circle cx="350" cy="90" r="1.5" fill="#00ffff" opacity="0.5"/>
-    <circle cx="370" cy="78" r="1" fill="#00d4d4" opacity="0.4"/>
-
-    {/* Ambient glow around whole scene */}
-    <circle cx="260" cy="130" r="140" fill="url(#handGlow)"/>
-  </svg>
-)
-
 /* ── Main Component ──────────────────────────────────────────────────────────── */
 const Home = () => {
   const { loading, generateReport, reports } = useInterview()
@@ -212,17 +126,20 @@ const Home = () => {
       {/* ── Main ── */}
       <main className="hm">
 
-        {/* Header with robot hand visual */}
+        {/* Header with robot hand background image */}
         <div className="hm__header">
+          <div className="hm__header-bg">
+            <img src="/hero-hands.jpg" alt="" aria-hidden="true" />
+          </div>
+          <div className="hm__header-overlay" />
+          <div className="hm__header-grid" />
+          <div className="hm__header-glow" />
           <div className="hm__header-content">
             <h1>
               Create Your Custom
               <span className="cyan-line">Interview Plan</span>
             </h1>
             <p>Let our AI analyze the job requirements and your unique profile to build a winning strategy.</p>
-          </div>
-          <div className="hm__header-visual">
-            <RobotHandVisual/>
           </div>
         </div>
 
@@ -303,7 +220,11 @@ const Home = () => {
                   <span className="flash"><IcFlash/></span>
                   AI-Powered Strategy Generation &bull; Approx 30s
                 </div>
-                <button id="generate-btn" className="gen-btn" onClick={handleGenerate}>
+                <button
+                  id="generate-btn"
+                  className={`gen-btn ${(!jobDesc.trim() || (!selfDesc.trim() && !fileName)) ? 'gen-btn--disabled' : ''}`}
+                  onClick={handleGenerate}
+                >
                   <IcStar/>
                   Generate My Interview Strategy
                   <IcArrow/>
