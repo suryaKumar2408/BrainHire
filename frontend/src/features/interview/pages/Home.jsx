@@ -126,12 +126,8 @@ const Home = () => {
       {/* ── Main ── */}
       <main className="hm">
 
-        {/* Header with robot hand background image */}
+        {/* Page header */}
         <div className="hm__header">
-          <div className="hm__header-bg">
-            <img src="/hero-hands.jpg" alt="" aria-hidden="true" />
-          </div>
-          <div className="hm__header-overlay" />
           <div className="hm__header-grid" />
           <div className="hm__header-glow" />
           <div className="hm__header-content">

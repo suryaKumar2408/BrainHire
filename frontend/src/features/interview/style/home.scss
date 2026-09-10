@@ -57,10 +57,32 @@ $font: 'Inter', system-ui, sans-serif;
     display: flex;
     width: 100%;
     min-height: 100vh;
-    background: $bg !important;
+    background: transparent !important;
     font-family: $font;
     color: $text-white !important;
     position: relative;
+    isolation: isolate;
+
+    &::before,
+    &::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+    }
+
+    &::before {
+        z-index: -2;
+        background: url('/hero-hands.jpg') center / cover no-repeat;
+        filter: brightness(0.38) contrast(1.08) saturate(0.8);
+    }
+
+    &::after {
+        z-index: -1;
+        background:
+            linear-gradient(90deg, rgba(10, 12, 16, 0.96) 0%, rgba(10, 12, 16, 0.75) 18%, rgba(10, 12, 16, 0.48) 100%),
+            linear-gradient(to bottom, rgba(8, 12, 18, 0.55), rgba(8, 12, 18, 0.88));
+    }
 
     // Guarantee everything inside is dark
     &, & * {
@@ -168,7 +190,9 @@ $font: 'Inter', system-ui, sans-serif;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background: $bg !important;
+    background: transparent !important;
+    position: relative;
+    z-index: 1;
 }
 
 // ── Top Header Band ───────────────────────────────────────────────────────────
@@ -176,7 +200,7 @@ $font: 'Inter', system-ui, sans-serif;
     position: relative;
     overflow: hidden;
     padding: 3.5rem 2rem 2.8rem;
-    background: #080c12;
+    background: transparent;
     border-bottom: 1px solid $border;
     display: flex;
     flex-direction: column;
@@ -251,7 +275,7 @@ $font: 'Inter', system-ui, sans-serif;
 
     h1 {
         font-size: 2.35rem;
-        font-weight: 800;
+        font-weight: 400;
         line-height: 1.15;
         letter-spacing: -0.6px;
         color: $text-white;
@@ -259,6 +283,7 @@ $font: 'Inter', system-ui, sans-serif;
 
         .cyan-line {
             display: block;
+            font-weight: 400;
             background: linear-gradient(90deg, $cyan 0%, #00ffff 45%, $cyan 90%);
             background-size: 200% auto;
             -webkit-background-clip: text;
@@ -270,6 +295,7 @@ $font: 'Inter', system-ui, sans-serif;
 
     p {
         font-size: 0.92rem;
+        font-weight: 400;
         color: $text-sub;
         line-height: 1.65;
         max-width: 480px;
