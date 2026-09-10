@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import "../style/home.scss"
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router'
+import { useAuth } from '../../auth/hooks/useAuth'
 import AuthLoading from '../../auth/components/AuthLoading'
 
 /* ── SVG Icons ─────────────────────────────────────────────────────────────── */
@@ -63,6 +64,7 @@ const IcArrow = () => (
 /* ── Main Component ──────────────────────────────────────────────────────────── */
 const Home = () => {
   const { loading, generateReport, reports } = useInterview()
+  const { handleLogout } = useAuth()
   const [jobDesc, setJobDesc] = useState('')
   const [selfDesc, setSelfDesc] = useState('')
   const [fileName, setFileName] = useState('')
@@ -113,8 +115,14 @@ const Home = () => {
         </nav>
 
         <div className="hs__bottom">
-          <button className="hs__back" onClick={() => navigate('/')}>
-            <IcBack/> Back to Home
+          <button
+            className="hs__back"
+            onClick={async () => {
+              await handleLogout()
+              navigate('/')
+            }}
+          >
+            <IcBack/> Logout
           </button>
         </div>
       </aside>
