@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import "../style/home.scss"
 import { useInterview } from '../hooks/useInterview.js'
 import { useNavigate } from 'react-router'
+import AuthLoading from '../../auth/components/AuthLoading'
 
 /* ── SVG Icons ─────────────────────────────────────────────────────────────── */
 const IcBrain = () => (
@@ -81,12 +82,7 @@ const Home = () => {
   }
 
   if (loading) {
-    return (
-      <main className="loading-screen">
-        <div className="ls-ring"/>
-        <h1>Generating Your Interview Plan...</h1>
-      </main>
-    )
+    return <AuthLoading />
   }
 
   return (
