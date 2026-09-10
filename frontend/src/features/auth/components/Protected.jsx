@@ -1,12 +1,13 @@
 import { useAuth } from "../hooks/useAuth";
 import { Navigate } from "react-router";
 import React from 'react'
+import AuthLoading from './AuthLoading'
 
 const Protected = ({children}) => {
     const { initializing, user } = useAuth()
     
     if(initializing){
-        return (<main><h1>Loading....</h1></main>)
+        return <AuthLoading />
     }
 
     if(!user){

@@ -227,3 +227,135 @@ main {
     from { opacity: 0; transform: translateY(14px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+// ── Auth Loading Reveal ─────────────────────────────────────────────────────
+.auth-loading {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: $bg;
+    color: $text-white;
+
+    &__grid {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        opacity: 0.8;
+        background-image:
+            linear-gradient(rgba(0, 212, 212, 0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 212, 212, 0.035) 1px, transparent 1px);
+        background-size: 38px 38px;
+        mask-image: radial-gradient(ellipse at center, black 0%, transparent 72%);
+    }
+
+    &__glow {
+        position: absolute;
+        z-index: -1;
+        width: min(620px, 90vw);
+        height: 380px;
+        border-radius: 50%;
+        background: radial-gradient(ellipse, rgba(0, 212, 212, 0.14) 0%, transparent 70%);
+        filter: blur(12px);
+        animation: loadingGlow 2.4s ease-in-out infinite;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.35rem;
+        animation: fadeUp 0.55s ease both;
+    }
+
+    &__brand {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: $cyan;
+        font-size: 0.9rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+
+    &__dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: $cyan-glow;
+        box-shadow: 0 0 12px $cyan-glow;
+        animation: loadingDot 1.2s ease-in-out infinite;
+    }
+
+    &__reveal {
+        position: relative;
+        min-width: 190px;
+        height: 3.5rem;
+        overflow: hidden;
+        text-align: center;
+        font-size: clamp(2rem, 6vw, 3rem);
+        font-weight: 800;
+        letter-spacing: -0.06em;
+    }
+
+    &__word {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+
+        &--loading {
+            color: $text-white;
+            animation: loadingWord 2.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+        }
+
+        &--ready {
+            color: $cyan;
+            text-shadow: 0 0 24px rgba(0, 212, 212, 0.55);
+            animation: readyWord 2.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+        }
+    }
+
+    &__track {
+        width: 190px;
+        height: 3px;
+        overflow: hidden;
+        border-radius: 100px;
+        background: rgba(255, 255, 255, 0.1);
+
+        span {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, $cyan, $cyan-glow);
+            box-shadow: 0 0 12px $cyan;
+            transform-origin: left;
+            animation: loadingProgress 2.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+        }
+    }
+}
+
+@keyframes loadingWord {
+    0%, 58% { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0); }
+    76%, 100% { opacity: 0; transform: translateY(-105%); clip-path: inset(0 0 100% 0); }
+}
+
+@keyframes readyWord {
+    0%, 56% { opacity: 0; transform: translateY(105%); clip-path: inset(100% 0 0 0); }
+    78%, 100% { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0 0); }
+}
+
+@keyframes loadingProgress {
+    0% { transform: scaleX(0); }
+    74%, 100% { transform: scaleX(1); }
+}
+
+@keyframes loadingGlow {
+    0%, 100% { opacity: 0.55; transform: scale(0.92); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes loadingDot {
+    0%, 100% { opacity: 0.45; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.15); }
+}
