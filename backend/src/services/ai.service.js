@@ -9,12 +9,37 @@ const openai = new OpenAI({
 // Free model with structured output support on OpenRouter
 const FREE_MODEL = "nvidia/nemotron-3-super-120b-a12b:free";
 
-// Safely parse JSON from model response (handles markdown code fences)
+/**
+ * Sentinel error thrown when the AI response is cut off due to hitting the
+ * token limit. The controller catches this specifically to trigger a retry
+ * with a reduced question count instead of returning a generic 500.
+ */
+class TruncatedResponseError extends Error {
+    constructor(message = "AI response was truncated (token limit hit)") {
+        super(message);
+        this.name = "TruncatedResponseError";
+    }
+}
+
+/**
+ * Safely parse JSON from a model response.
+ * - Strips markdown code fences if the model wrapped its output.
+ * - Throws TruncatedResponseError on SyntaxError so callers can distinguish
+ *   a truncated/malformed response from a completely different failure.
+ */
 function safeParseJson(content) {
-    if (!content) throw new Error("Empty response from model");
-    // Strip markdown code fences if present
+    if (!content) throw new TruncatedResponseError("Empty response from model");
     const stripped = content.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
-    return JSON.parse(stripped);
+    try {
+        return JSON.parse(stripped);
+    } catch (err) {
+        if (err instanceof SyntaxError) {
+            throw new TruncatedResponseError(
+                `JSON parse failed — response is likely truncated. Raw snippet: "${stripped.slice(0, 120)}..."`
+            );
+        }
+        throw err;
+    }
 }
 
 const interviewReportSchema = {
@@ -126,7 +151,28 @@ CRITICAL RULES:
 3. The "answer" field MUST be a detailed, multi-sentence guide explaining HOW to answer the question
 4. NEVER omit the "answer" field - it is the most important field for the candidate`;
 
-async function generateInterviewReport({resume, selfDescription, jobDescription}) {
+/**
+ * Generate a comprehensive interview preparation report via the AI model.
+ *
+ * @param {object} params
+ * @param {string} params.resume          - Extracted plain text from the uploaded PDF (may be empty).
+ * @param {string} params.selfDescription - Free-text profile the user typed.
+ * @param {string} params.jobDescription  - The target job description.
+ * @param {object} [params.options]       - Optional generation controls.
+ * @param {number} [params.options.maxQuestions=5] - Max questions per category to request.
+ *                                                   Lower values reduce token usage on retries.
+ *
+ * @throws {TruncatedResponseError} When the model hits its token cap before
+ *         finishing the JSON payload. The controller uses this to trigger a
+ *         retry with fewer questions.
+ * @throws {Error} For any other AI or network failure.
+ */
+async function generateInterviewReport({ resume, selfDescription, jobDescription, options = {} }) {
+    const { maxQuestions = 5 } = options;
+
+    const questionCountHint = maxQuestions < 5
+        ? `IMPORTANT: Due to length constraints, generate at most ${maxQuestions} technical questions and ${maxQuestions} behavioral questions.`
+        : `Generate 5 technical questions and 5 behavioral questions.`;
 
     const prompt = `Generate a comprehensive interview report for this candidate.
 
@@ -134,20 +180,15 @@ Resume: ${resume}
 Self Description: ${selfDescription}
 Job Description: ${jobDescription}
 
-Remember: Each question in technicalQuestions and behavioralQuestions MUST include "question", "intention", AND "answer" fields. The "answer" must be a detailed guide on how to answer.`
+${questionCountHint}
+Remember: Each question in technicalQuestions and behavioralQuestions MUST include "question", "intention", AND "answer" fields. The "answer" must be a detailed guide on how to answer.`;
 
     const response = await openai.chat.completions.create({
         model: FREE_MODEL,
         max_tokens: 8000,
         messages: [
-            {
-                role: "system",
-                content: SYSTEM_PROMPT
-            },
-            {
-                role: "user",
-                content: prompt
-            }
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user",   content: prompt }
         ],
         response_format: {
             type: "json_schema",
@@ -159,9 +200,22 @@ Remember: Each question in technicalQuestions and behavioralQuestions MUST inclu
         }
     });
 
-    const report = safeParseJson(response.choices[0].message.content);
+    const choice = response.choices[0];
 
-    // Post-processing: ensure every question has an answer field
+    // If the model ran out of tokens before closing the JSON, throw immediately
+    // so the caller can decide whether to retry rather than hitting a SyntaxError
+    // deep inside safeParseJson with no context.
+    if (choice.finish_reason === "length") {
+        throw new TruncatedResponseError(
+            `Model stopped at token limit (finish_reason=length). maxQuestions was ${maxQuestions}.`
+        );
+    }
+
+    // safeParseJson also throws TruncatedResponseError on SyntaxError in case
+    // the finish_reason wasn't reported accurately by the provider.
+    const report = safeParseJson(choice.message.content);
+
+    // Post-processing: guarantee every question has an answer field
     const ensureAnswers = (questions) => {
         if (!Array.isArray(questions)) return questions;
         return questions.map(q => {
@@ -172,12 +226,8 @@ Remember: Each question in technicalQuestions and behavioralQuestions MUST inclu
         });
     };
 
-    if (report.technicalQuestions) {
-        report.technicalQuestions = ensureAnswers(report.technicalQuestions);
-    }
-    if (report.behavioralQuestions) {
-        report.behavioralQuestions = ensureAnswers(report.behavioralQuestions);
-    }
+    if (report.technicalQuestions) report.technicalQuestions = ensureAnswers(report.technicalQuestions);
+    if (report.behavioralQuestions) report.behavioralQuestions = ensureAnswers(report.behavioralQuestions);
 
     return report;
 }
@@ -273,4 +323,4 @@ Tailor the resume for the given job description. Highlight the candidate's stren
     return pdfBuffer;
 }
 
-module.exports = { generateInterviewReport, generateResumePdf }
+module.exports = { generateInterviewReport, generateResumePdf, TruncatedResponseError }

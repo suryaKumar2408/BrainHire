@@ -24,7 +24,19 @@ export const useInterview = () => {
                 setReport(response.interviewReport)
             }
         } catch (error) {
-            console.error("Generate report hook error:", error.response?.data || error.message || error)
+            const serverError = error.response?.data
+
+            // 422 → the AI response was truncated even after our automatic retry.
+            // Surface the server's human-readable message so the user knows what to do.
+            if (error.response?.status === 422 && serverError?.code === "RESPONSE_TRUNCATED") {
+                console.warn("[Interview] Response truncated:", serverError.detail)
+                alert(serverError.message)
+                return null
+            }
+
+            // Any other error – log the full detail and show a generic message.
+            console.error("Generate report hook error:", serverError || error.message || error)
+            alert("Failed to generate your interview plan. Please try again in a moment.")
         } finally {
             setLoading(false)
         }
