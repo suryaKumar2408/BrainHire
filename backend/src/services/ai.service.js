@@ -6,6 +6,17 @@ const openai = new OpenAI({
     apiKey: process.env.OPENROUTER_API_KEY,
 });
 
+// Free model with structured output support on OpenRouter
+const FREE_MODEL = "nvidia/nemotron-3-super-120b-a12b:free";
+
+// Safely parse JSON from model response (handles markdown code fences)
+function safeParseJson(content) {
+    if (!content) throw new Error("Empty response from model");
+    // Strip markdown code fences if present
+    const stripped = content.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
+    return JSON.parse(stripped);
+}
+
 const interviewReportSchema = {
     type: "object",
     properties: {
@@ -126,7 +137,7 @@ Job Description: ${jobDescription}
 Remember: Each question in technicalQuestions and behavioralQuestions MUST include "question", "intention", AND "answer" fields. The "answer" must be a detailed guide on how to answer.`
 
     const response = await openai.chat.completions.create({
-        model: "meta-llama/llama-3.3-70b-instruct:free",
+        model: FREE_MODEL,
         max_tokens: 8000,
         messages: [
             {
@@ -148,7 +159,7 @@ Remember: Each question in technicalQuestions and behavioralQuestions MUST inclu
         }
     });
 
-    const report = JSON.parse(response.choices[0].message.content);
+    const report = safeParseJson(response.choices[0].message.content);
 
     // Post-processing: ensure every question has an answer field
     const ensureAnswers = (questions) => {
@@ -233,7 +244,7 @@ Job Description: ${jobDescription}
 Tailor the resume for the given job description. Highlight the candidate's strengths and relevant experience. The HTML should include inline/embedded CSS and be ready to convert to PDF. Keep it to 1-2 pages, ATS-friendly, and natural-sounding.`;
 
     const response = await openai.chat.completions.create({
-        model: "meta-llama/llama-3.3-70b-instruct:free",
+        model: FREE_MODEL,
         max_tokens: 3000,
         messages: [
             {
@@ -255,7 +266,7 @@ Tailor the resume for the given job description. Highlight the candidate's stren
         }
     });
 
-    const jsonContent = JSON.parse(response.choices[0].message.content);
+    const jsonContent = safeParseJson(response.choices[0].message.content);
 
     const pdfBuffer = await generatePdfFromHtml(jsonContent.html);
 
