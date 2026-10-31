@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const api=axios.create({
-baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
+baseURL: import.meta.env.VITE_API_URL || "http://localhost:3001",
 withCredentials:true
 })
 
@@ -49,7 +49,7 @@ export async function login({email,password}) {
 
 export async function logout() {
   try {
-    const response=await api.get("/api/auth/logout")
+    const response=await api.post("/api/auth/logout")
     localStorage.removeItem("token")
     return response.data
   } catch (error) {

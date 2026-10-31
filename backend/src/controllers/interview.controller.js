@@ -1,4 +1,4 @@
-const pdfParse = require("pdf-parse")
+const { PDFParse } = require("pdf-parse")
 const { generateInterviewReport, generateResumePdf, TruncatedResponseError } = require("../services/ai.service")
 const interviewReportModel = require("../models/interviewReport.model")
 
@@ -66,11 +66,13 @@ async function generateInterViewReportController(req, res) {
     let resumeText = "";
     if (req.file) {
         try {
-            const resumeContent = await (new pdfParse.PDFParse(Uint8Array.from(req.file.buffer))).getText();
-            resumeText = resumeContent.text || "";
+            const parser = new PDFParse({ data: req.file.buffer })
+            const resumeContent = await parser.getText()
+            await parser.destroy()
+            resumeText = resumeContent.text || ""
         } catch (err) {
-            console.error("PDF parse error:", err);
-            return res.status(400).json({ message: "Failed to parse uploaded PDF resume." });
+            console.error("PDF parse error:", err)
+            return res.status(400).json({ message: "Failed to parse uploaded PDF resume." })
         }
     }
 

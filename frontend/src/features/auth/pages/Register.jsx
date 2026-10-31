@@ -10,15 +10,18 @@ const Register = () => {
   const [username, setusername] = useState("")
   const [email, setemail] = useState("")
   const [password, setpassword] = useState("")
+  const [error, setError] = useState("")
   const{user, loading, initializing, handleRegister}=useAuth()
 
   const handleSubmit=async(e)=>{
     e.preventDefault()
+    setError("")
     try {
       await handleRegister({username,email,password})
       navigate("/dashboard")
-    } catch (error) {
-      // Registration failed — stay on the page
+    } catch (err) {
+      const msg = err?.response?.data?.message || "Registration failed. Please try again."
+      setError(msg)
     }
   }
   // Already logged in → skip register page
@@ -46,6 +49,7 @@ const Register = () => {
           <span>BrainHire</span>
         </div>
         <h1>Register</h1>
+        {error && <p className="auth-error">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor='username'>Username</label>
@@ -71,7 +75,9 @@ const Register = () => {
               required
             />
           </div>
-          <button className='button primary-button' type="submit">Register</button>
+          <button className='button primary-button' type="submit" disabled={loading}>
+            {loading ? "Registering…" : "Register"}
+          </button>
         </form>
         <p>Already have an account? <Link to={"/login"}>Login</Link></p>
       </div>

@@ -10,11 +10,18 @@ const Login = () => {
   const navigate=useNavigate()
   const [email, setemail] = useState("")
   const [password, setpassword] = useState("")
+  const [error, setError] = useState("")
 
   const handleSubmit=async (e)=>{
     e.preventDefault()
-    await handleLogin({email,password})
-    navigate('/dashboard')
+    setError("")
+    try {
+      await handleLogin({email,password})
+      navigate('/dashboard')
+    } catch (err) {
+      const msg = err?.response?.data?.message || "Login failed. Please try again."
+      setError(msg)
+    }
   }
 
   // Already logged in → skip login page
@@ -42,6 +49,7 @@ const Login = () => {
           <span>BrainHire</span>
         </div>
         <h1>Login</h1>
+        {error && <p className="auth-error">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor='email'>Email</label>
@@ -59,7 +67,9 @@ const Login = () => {
               required
             />
           </div>
-          <button className='button primary-button' type="submit">Login</button>
+          <button className='button primary-button' type="submit" disabled={loading}>
+            {loading ? "Logging in…" : "Login"}
+          </button>
         </form>
         <p>Don't have an account? <Link to={"/register"}>Register</Link></p>
       </div>

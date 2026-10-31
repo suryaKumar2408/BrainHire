@@ -7,7 +7,7 @@ const openai = new OpenAI({
 });
 
 // Free model with structured output support on OpenRouter
-const FREE_MODEL = "nvidia/nemotron-3-super-120b-a12b:free";
+const FREE_MODEL = "poolside/laguna-s-2.1:free";
 
 /**
  * Sentinel error thrown when the AI response is cut off due to hitting the
@@ -190,15 +190,15 @@ Remember: Each question in technicalQuestions and behavioralQuestions MUST inclu
             { role: "system", content: SYSTEM_PROMPT },
             { role: "user",   content: prompt }
         ],
-        response_format: {
-            type: "json_schema",
-            json_schema: {
-                name: "interview_report",
-                strict: true,
-                schema: interviewReportSchema
-            }
-        }
+        response_format: { type: "json_object" }
     });
+    console.log("Model used:", response.model);
+
+    console.log("Token usage:", {
+    inputTokens: response.usage?.prompt_tokens,
+    outputTokens: response.usage?.completion_tokens,
+    totalTokens: response.usage?.total_tokens
+});
 
     const choice = response.choices[0];
 
@@ -306,14 +306,7 @@ Tailor the resume for the given job description. Highlight the candidate's stren
                 content: prompt
             }
         ],
-        response_format: {
-            type: "json_schema",
-            json_schema: {
-                name: "resume_html",
-                strict: true,
-                schema: resumeHtmlSchema
-            }
-        }
+        response_format: { type: "json_object" }
     });
 
     const jsonContent = safeParseJson(response.choices[0].message.content);
