@@ -7,7 +7,7 @@ const openai = new OpenAI({
 });
 
 // Free model with structured output support on OpenRouter
-const FREE_MODEL = "poolside/laguna-s-2.1:free";
+const FREE_MODEL = "openrouter/free";
 
 /**
  * Sentinel error thrown when the AI response is cut off due to hitting the
